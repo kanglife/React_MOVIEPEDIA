@@ -20,7 +20,7 @@ function Star({ selected = false, rating, onSelect, onHover }) {
   );
 }
 
-function Rating({ className, value = 0, onSelect, onHover, onMouseOut }) {
+function Rating({ className = "", value = 0, onSelect, onHover, onMouseOut }) {
   return (
     <div className={className} onMouseOut={onMouseOut}>
       {RATINGS.map((rating) => (

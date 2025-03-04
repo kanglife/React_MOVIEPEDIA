@@ -1,8 +1,11 @@
 // 비제어 컴포넌트 파일 컴포넌트
 import React, { useEffect, useRef, useState } from "react";
+import placeholderImg from "../assets/preview-placeholder.png";
+import resetImg from "../assets/ic-reset.png";
+import "./css/FileInput.css";
 
-function FileInput({ name, value, onChange }) {
-  const [preView, setPreview] = useState();
+function FileInput({ className = "", name, value, initialPreview, onChange }) {
+  const [preview, setPreview] = useState(initialPreview);
   const inputRef = useRef();
 
   const handleChange = (e) => {
@@ -25,21 +28,30 @@ function FileInput({ name, value, onChange }) {
     setPreview(nextPriview);
 
     return () => {
-      setPreview();
+      setPreview(initialPreview);
       URL.revokeObjectURL(nextPriview);
     };
-  }, [value]);
+  }, [value, initialPreview]);
 
   return (
-    <div>
-      <img src={preView} alt="이미지 미리보기" />
+    <div className={`FileInput ${className}`}>
+      <img
+        className={`FileInput-preview ${preview ? "selected" : ""}`}
+        src={preview || placeholderImg}
+        alt="이미지 미리보기"
+      />
       <input
+        className="FileInput-hidden-overlay"
         type="file"
         accept="image/png, image/jpeg"
         onChange={handleChange}
         ref={inputRef}
       />
-      ;{value && <button onClick={handleClearClick}>X</button>}
+      {value && (
+        <button className="FileInput-clear-button" onClick={handleClearClick}>
+          <img src={resetImg} alt="선택해제" />
+        </button>
+      )}
     </div>
   );
 }
